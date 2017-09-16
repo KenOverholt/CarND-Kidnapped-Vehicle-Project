@@ -109,7 +109,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
   vector<int> associations;
   vector<double> sense_x;
   vector<double> sense_y; //KRO 124
-  vector<LandmarkObs> trans_observactions;
+  vector<LandmarkObs> trans_observations;
   //??
   //??
   for (int p=0; p< particles.size(); p++) //??
