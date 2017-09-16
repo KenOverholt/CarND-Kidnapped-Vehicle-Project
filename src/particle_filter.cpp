@@ -149,8 +149,8 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
         double sig_x = std_landmark[0];
         double sig_y = std_landmark[1];
         
-	      double exponent = ( pow(x_obs - mu_x,2)/(2* pow(sig_x,2)) +
-                           ( pow(y_obs-mu_y,2)/(2* pow(sig_y,2)) );
+	      double exponent = ( pow(x_obs - mu_x,2))/(2* pow(sig_x,2)) +
+                           ( pow(y_obs-mu_y,2))/(2* pow(sig_y,2)) ;
         long double multiplier = 1/(2*M_PI*std_landmark[0]*std_landmark[1]) * exp(-exponent); //KRO finished?
         if (multiplier > 0)
         {
