@@ -108,27 +108,31 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
   
   vector<int> associations;
   vector<double> sense_x;
-  vector<double> sense_y;
+  vector<double> sense_y; //KRO 124
   vector<LandmarkObs> trans_observactions;
-  LandmarkObs obs;
-  for (int i=0; i<observations.size(); i++)
-  {
-    LandmarkObs trans_obs;
-    obs = observations[i];
-    
-    //perform the space transformation from vehicle to map
-    trans_obs.x = particles[p].x+(obs.x*cos(particles[p].theta)-obs.y*sin(particles[p].theta));
-    trans_obs.y = particles[p].y+(obs.x*sin(particles[p].theta)+obs.y*cos(particles[p].theta));
-    trans_observations.push_back(trans_obs);
-	}
-  particles[p].weight = 1.0;
-  for(int i=0; i< trans_observations.size(); i++)
-  {
-    double closet_dis = sensor_range;
-    int association = 0;
-    for (int j=0; j<map_landmarks.landmark_list.size(); j++)
+  //??
+  //??
+  for (int p=0; p< particles.size(); p++) //??
+  {  //KRO 129
+    LandmarkObs obs;
+    for (int i=0; i<observations.size(); i++)
     {
-      //KRO missing 149-151
+      LandmarkObs trans_obs;
+      obs = observations[i];
+    
+      //perform the space transformation from vehicle to map
+      trans_obs.x = particles[p].x+(obs.x*cos(particles[p].theta)-obs.y*sin(particles[p].theta));
+      trans_obs.y = particles[p].y+(obs.x*sin(particles[p].theta)+obs.y*cos(particles[p].theta));
+      trans_observations.push_back(trans_obs);
+	  }
+    particles[p].weight = 1.0;
+    for(int i=0; i< trans_observations.size(); i++)
+    {
+      double closet_dis = sensor_range;
+      int association = 0;
+      for (int j=0; j<map_landmarks.landmark_list.size(); j++)
+      {
+        //KRO missing 149-151
         double calc_dist = sqrt(pow(trans_observations[i].x-  ; //KRO finish
         if(calc_dist < closet_dis)
         {
@@ -159,6 +163,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     }
     particles[p] = SetAssociations(particles[p], associations, sense_x, sense_y);
     weights[p] = particles[p].weight;
+  }
 }
 
 void ParticleFilter::resample() {
