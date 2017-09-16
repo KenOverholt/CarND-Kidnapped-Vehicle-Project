@@ -144,8 +144,8 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
       {
         double x_obs = trans_observations[i].x;
         double y_obs = trans_observations[i].y;
-        double mu_x = map_landmarks.landmark_list[assocation].x_f;
-        double mu_y = map_landmarks.landmark_list[assocation].y_f;
+        double mu_x = map_landmarks.landmark_list[association].x_f;
+        double mu_y = map_landmarks.landmark_list[association].y_f;
         double sig_x = std_landmark[0];
         double sig_y = std_landmark[1];
         
