@@ -82,7 +82,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
     particles[i].y = N_y(gen);
     particles[i].theta = N_theta(gen);
     
-  ) // end for (int i=0; i<num_particles; i++)
+  } // end for (int i=0; i<num_particles; i++)
 }
 
 void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations) {
