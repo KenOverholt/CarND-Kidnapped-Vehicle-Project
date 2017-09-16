@@ -128,15 +128,15 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     particles[p].weight = 1.0;
     for(int i=0; i< trans_observations.size(); i++)
     {
-      double closet_dis = sensor_range;
+      double closest_dis = sensor_range;
       int association = 0;
       for (int j=0; j<map_landmarks.landmark_list.size(); j++)
       {
         //KRO missing 149-151
-        double calc_dist = sqrt(pow(trans_observations[i].x-  ; //KRO finish
-        if(calc_dist < closet_dis)
+        double calc_dist = sqrt(pow(trans_observations[i].x-0,2  )); //KRO finish
+        if(calc_dist < closest_dis)
         {
-          closet_dis = calc_dist;
+          closest_dis = calc_dist;
           association = j;
         }
       }
