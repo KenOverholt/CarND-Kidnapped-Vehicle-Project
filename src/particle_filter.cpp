@@ -109,24 +109,26 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
   vector<int> associations;
   vector<double> sense_x;
   vector<double> sense_y;
-  //KRO missing 126-128
+  vector<LandmarkObs> trans_observactions;
+  LandmarkObs obs;
+  for (int i=0; i<observations.size(); i++)
   {
     LandmarkObs trans_obs;
     obs = observations[i];
     
     //perform the space transformation from vehicle to map
-    trans_obs.x = particles[p].x+(obs.x*cos(particles[p].theta...; //KRO finish
-    trans_obs.y = particles[p].y+(obs.x*sin(particles[p].theta...; //KRO finish
+    trans_obs.x = particles[p].x+(obs.x*cos(particles[p].theta)-obs.y*sin(particles[p].theta));
+    trans_obs.y = particles[p].y+(obs.x*sin(particles[p].theta)+obs.y*cos(particles[p].theta));
     trans_observations.push_back(trans_obs);
-    //KRO missing 137-138
-    particles[p].weight = 1.0;
-    for(int i=0; i< trans_observations.size(); i++)
+	}
+  particles[p].weight = 1.0;
+  for(int i=0; i< trans_observations.size(); i++)
+  {
+    double closet_dis = sensor_range;
+    int association = 0;
+    for (int j=0; j<map_landmarks.landmark_list.size(); j++)
     {
-      double closet_dis = sensor_range;
-      int association = 0;
-      for (int j=0; j<map_landmarks.landmark_list.size(); j++)
-      {
-        //KRO missing 149-151
+      //KRO missing 149-151
         double calc_dist = sqrt(pow(trans_observations[i].x-  ; //KRO finish
         if(calc_dist < closet_dis)
         {
@@ -134,11 +136,12 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
           association = j;
         }
       }
-      //KRO missing 159-152
+      if (association!=0)
+      {
         double meas_y = trans_observations[i].y;
-        double mu_x = map_landmarks.landmark_list[assocation...; //KRO finish
-        double mu_y = map_landmarks.landmark_list[assocation...; //KRO finish
-        long double multiplier = 1/(2*M_PI*std_landmark[0]*std...; //KRO finish
+        double mu_x = map_landmarks.landmark_list[assocation].x_f;
+        double mu_y = map_landmarks.landmark_list[assocation].y_f;
+        long double multiplier = 1/(2*M_PI*std_landmark[0]*std_landmark[1])*exp(-(pow(meas_x-...; //KRO finish
         if (multiplier > 0)
         {
           particles[p].weight*= multiplier;
