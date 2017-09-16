@@ -69,8 +69,8 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
     }
     else
     {
-      new_x = particles[i].x + velocity/yaw_rate*(sin(particles[i].theta+yaw_rate*delta+t)-sin(...; //KRO finish
-      new_y = particles[i].y + velocity/yaw_rate*(cos(particles[i].theta)-cos(particles[i].theta...; //KRO finish
+      new_x = particles[i].x + velocity/yaw_rate*( sin(particles[i].theta+yaw_rate*delta_t) - sin(particles[i].theta) ); //KRO
+      new_y = particles[i].y + velocity/yaw_rate*( cos(particles[i].theta) - cos(particles[i].theta+yaw_rate*delta_t)	);  //KRO
       new_theta = particles[i].theta + yaw_rate*delta_t;
     }
     
