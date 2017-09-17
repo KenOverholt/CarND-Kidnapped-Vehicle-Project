@@ -104,11 +104,13 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	//   https://www.willamette.edu/~gorr/classes/GeneralGraphics/Transforms/transforms2d.htm
 	//   and the following is a good resource for the actual equation to implement (look at equation 
 	//   3.33
-	//   http://planning.cs.uiuc.edu/node99.html
+	//   http://planning.cs.uiuc.edu/node99.html  //KRO 116
   
-  vector<int> associations;
+  //KRO missing 117, 118, 119, 120, 121
+  
+  vector<int> associations;  //KRO 122
   vector<double> sense_x;
-  vector<double> sense_y; //KRO 124
+  vector<double> sense_y;
   vector<LandmarkObs> trans_observations;
   //??
   //??
@@ -123,17 +125,19 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
       //perform the space transformation from vehicle to map
       trans_obs.x = particles[p].x+(obs.x*cos(particles[p].theta)-obs.y*sin(particles[p].theta));
       trans_obs.y = particles[p].y+(obs.x*sin(particles[p].theta)+obs.y*cos(particles[p].theta));
-      trans_observations.push_back(trans_obs);
-	  }
-    particles[p].weight = 1.0;
+      trans_observations.push_back(trans_obs);  //KRO 136
+	  }  //KRO missing 137, 138 assuming this is the content of one of them
+    particles[p].weight = 1.0;  //KRO 139
     for(int i=0; i< trans_observations.size(); i++)
     {
       double closest_dis = sensor_range;
       int association = 0;
       for (int j=0; j<map_landmarks.landmark_list.size(); j++)
       {
-        //KRO missing 149-151
-        double calc_dist = sqrt(pow(trans_observations[i].x-0,2  )); //KRO finish
+	      double landmark_x = map_landmarks.landmark_list[j].x_f; //KRO 149
+        double landmark_y = map_landmarks.landmark_list[j].y_f; //KRO 150
+        //KRO missing 151
+        double calc_dist = sqrt( pow(trans_observations[i].x-landmark_x,2) + pow(trans_observations[i].y-landmark_y,2) ); //KRO finish
         if(calc_dist < closest_dis)
         {
           closest_dis = calc_dist;
