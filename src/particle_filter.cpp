@@ -81,8 +81,8 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
     }
     else
     {
-      new_x = particles[i].x + velocity/yaw_rate*( sin(particles[i].theta+yaw_rate*delta_t) - sin(particles[i].theta) ); //KRO
-      new_y = particles[i].y + velocity/yaw_rate*( cos(particles[i].theta) - cos(particles[i].theta+yaw_rate*delta_t)	);  //KRO
+      new_x = particles[i].x + velocity/yaw_rate*( sin(particles[i].theta+yaw_rate*delta_t) - sin(particles[i].theta) );
+      new_y = particles[i].y + velocity/yaw_rate*( cos(particles[i].theta) - cos(particles[i].theta+yaw_rate*delta_t)	);
       new_theta = particles[i].theta + yaw_rate*delta_t;
       //cout << "          yaw_rate 2nd: " << yaw_rate << "  new_x: " << new_x << "  new_y: " << new_y << endl;
     }
@@ -126,18 +126,14 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	//   https://www.willamette.edu/~gorr/classes/GeneralGraphics/Transforms/transforms2d.htm
 	//   and the following is a good resource for the actual equation to implement (look at equation 
 	//   3.33
-	//   http://planning.cs.uiuc.edu/node99.html  //KRO 116
+	//   http://planning.cs.uiuc.edu/node99.html
   
-  //KRO missing 117, 118, 119, 120, 121
-  
-  //??
-  //??
-  for (int p=0; p< particles.size(); p++) //??
-  {  //KRO 129
-  vector<int> associations;  //KRO 122
-  vector<double> sense_x;
-  vector<double> sense_y;
-  vector<LandmarkObs> trans_observations;
+  for (int p=0; p< particles.size(); p++)
+  {
+    vector<int> associations;
+    vector<double> sense_x;
+    vector<double> sense_y;
+    vector<LandmarkObs> trans_observations;
     LandmarkObs obs;
     for (int i=0; i<observations.size(); i++)
     {
@@ -147,19 +143,19 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
       //perform the space transformation from vehicle to map
       trans_obs.x = particles[p].x+(obs.x*cos(particles[p].theta)-obs.y*sin(particles[p].theta));
       trans_obs.y = particles[p].y+(obs.x*sin(particles[p].theta)+obs.y*cos(particles[p].theta));
-      trans_observations.push_back(trans_obs);  //KRO 136
-    }  //KRO missing 137, 138 assuming this is the content of one of them
-    particles[p].weight = 1.0;  //KRO 139
+      trans_observations.push_back(trans_obs);
+    }
+    particles[p].weight = 1.0;
     for(int i=0; i< trans_observations.size(); i++)
     {
       double closest_dis = sensor_range;
       int association = 0;
       for (int j=0; j<map_landmarks.landmark_list.size(); j++)
       {
-        double landmark_x = map_landmarks.landmark_list[j].x_f; //KRO 149
-        double landmark_y = map_landmarks.landmark_list[j].y_f; //KRO 150
-        //KRO missing 151
-        double calc_dist = sqrt( pow(trans_observations[i].x-landmark_x,2) + pow(trans_observations[i].y-landmark_y,2) ); //KRO finish
+        double landmark_x = map_landmarks.landmark_list[j].x_f;
+        double landmark_y = map_landmarks.landmark_list[j].y_f;
+        
+        double calc_dist = sqrt( pow(trans_observations[i].x-landmark_x,2) + pow(trans_observations[i].y-landmark_y,2) );
         if(calc_dist < closest_dis)
         {
           closest_dis = calc_dist;
@@ -177,7 +173,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
         
         double exponent = ( pow(x_obs - mu_x,2))/(2* pow(sig_x,2)) +
                            ( pow(y_obs-mu_y,2))/(2* pow(sig_y,2)) ;
-        long double multiplier = 1/(2*M_PI*std_landmark[0]*std_landmark[1]) * exp(-exponent); //KRO finished?
+        long double multiplier = 1/(2*M_PI*std_landmark[0]*std_landmark[1]) * exp(-exponent);
         if (multiplier > 0)
         {
           particles[p].weight*= multiplier;
