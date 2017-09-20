@@ -29,11 +29,11 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	// NOTE: Consult particle_filter.h for more information about this method (and others in this file).
 	num_particles = 100;
 	
-  std::default_random_engine gen;
+  default_random_engine gen;
   
-  std::normal_distribution<double> N_x(x, std[0]);
-  std::normal_distribution<double> N_y(y, std[1]);
-  std::normal_distribution<double> N_theta(theta, std[2]);
+  normal_distribution<double> N_x(x, std[0]);
+  normal_distribution<double> N_y(y, std[1]);
+  normal_distribution<double> N_theta(theta, std[2]);
   
   for (int i=0; i<num_particles; i++)
   {
@@ -63,18 +63,21 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
     double new_y;
     double new_theta;
     
-    if (yaw_rate == 0)
+    if (fabs(yaw_rate) < 0.0001)
     {
+      cout << "yaw_rate 1st: " << yaw_rate << endl;
       new_x = particles[i].x + velocity*delta_t*cos(particles[i].theta);
       new_y = particles[i].y + velocity*delta_t*sin(particles[i].theta);
       new_theta = particles[i].theta;
     }
     else
     {
+      cout << "yaw_rate 2nd: " << yaw_rate << endl;
       new_x = particles[i].x + velocity/yaw_rate*( sin(particles[i].theta+yaw_rate*delta_t) - sin(particles[i].theta) ); //KRO
       new_y = particles[i].y + velocity/yaw_rate*( cos(particles[i].theta) - cos(particles[i].theta+yaw_rate*delta_t)	);  //KRO
       new_theta = particles[i].theta + yaw_rate*delta_t;
     }
+    cout << "new_x: " << new_x << endl;
     
     normal_distribution<double> N_x(new_x, std_pos[0]);
     normal_distribution<double> N_y(new_y, std_pos[1]);
@@ -136,7 +139,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
       int association = 0;
       for (int j=0; j<map_landmarks.landmark_list.size(); j++)
       {
-	      double landmark_x = map_landmarks.landmark_list[j].x_f; //KRO 149
+        double landmark_x = map_landmarks.landmark_list[j].x_f; //KRO 149
         double landmark_y = map_landmarks.landmark_list[j].y_f; //KRO 150
         //KRO missing 151
         double calc_dist = sqrt( pow(trans_observations[i].x-landmark_x,2) + pow(trans_observations[i].y-landmark_y,2) ); //KRO finish
@@ -155,7 +158,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
         double sig_x = std_landmark[0];
         double sig_y = std_landmark[1];
         
-	      double exponent = ( pow(x_obs - mu_x,2))/(2* pow(sig_x,2)) +
+        double exponent = ( pow(x_obs - mu_x,2))/(2* pow(sig_x,2)) +
                            ( pow(y_obs-mu_y,2))/(2* pow(sig_y,2)) ;
         long double multiplier = 1/(2*M_PI*std_landmark[0]*std_landmark[1]) * exp(-exponent); //KRO finished?
         if (multiplier > 0)
