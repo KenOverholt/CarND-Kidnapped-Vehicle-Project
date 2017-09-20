@@ -25,7 +25,9 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	//   x, y, theta and their uncertainties from GPS) and all weights to 1. 
 	// Add random Gaussian noise to each particle.
 	// NOTE: Consult particle_filter.h for more information about this method (and others in this file).
-	num_particles = 100;
+	
+  debug = true;
+  num_particles = 100;
 	
   default_random_engine gen;
   
@@ -37,9 +39,18 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
   {
     Particle particle;
     particle.id = i;
-    particle.x = N_x(gen);
-    particle.y = N_y(gen);
-    particle.theta = N_theta(gen);
+    if (debug = true)
+    {
+      particle.x = N_x(gen);
+      particle.y = N_y(gen);
+      particle.theta = N_theta(gen);
+    }
+    else
+    {
+      particle.x = x;
+      particle.y = y;
+      particle.theta = theta;
+    }      
     particle.weight = 1;
     particles.push_back(particle);
     weights.push_back(1);
@@ -76,13 +87,22 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
       //cout << "          yaw_rate 2nd: " << yaw_rate << "  new_x: " << new_x << "  new_y: " << new_y << endl;
     }
 
-    normal_distribution<double> N_x(new_x, std_pos[0]);
-    normal_distribution<double> N_y(new_y, std_pos[1]);
-    normal_distribution<double> N_theta(new_theta, std_pos[2]);
+      normal_distribution<double> N_x(new_x, std_pos[0]);
+      normal_distribution<double> N_y(new_y, std_pos[1]);
+      normal_distribution<double> N_theta(new_theta, std_pos[2]);
 
-    particles[i].x = N_x(gen);
-    particles[i].y = N_y(gen);
-    particles[i].theta = N_theta(gen);
+    if (debug)
+    {
+      particles[i].x = new_x;
+      particles[i].y = new_y;
+      particles[i].theta = new_theta;
+    }
+    else
+    {
+      particles[i].x = N_x(gen);
+      particles[i].y = N_y(gen);
+      particles[i].theta = N_theta(gen);
+    }      
     
   } // end for (int i=0; i<num_particles; i++)
 }
