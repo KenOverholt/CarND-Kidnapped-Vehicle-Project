@@ -39,7 +39,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
   {
     Particle particle;
     particle.id = i;
-    if (debug = true)
+    if (!debug)
     {
       particle.x = N_x(gen);
       particle.y = N_y(gen);
