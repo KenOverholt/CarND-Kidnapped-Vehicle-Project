@@ -57,6 +57,10 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 
   default_random_engine gen;
   
+    normal_distribution<double> N_x(new_x, std_pos[0]);
+    normal_distribution<double> N_y(new_y, std_pos[1]);
+    normal_distribution<double> N_theta(new_theta, std_pos[2]);
+	
   for (int i=0; i<num_particles; i++)
   {
     double new_x;
@@ -78,9 +82,6 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
       cout << "          yaw_rate 2nd: " << yaw_rate << "  new_x: " << new_x << "  new_y: " << new_y << endl;
     }
     
-    normal_distribution<double> N_x(new_x, std_pos[0]);
-    normal_distribution<double> N_y(new_y, std_pos[1]);
-    normal_distribution<double> N_theta(new_theta, std_pos[2]);
     
     particles[i].x = N_x(gen);
     particles[i].y = N_y(gen);
