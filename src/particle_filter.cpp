@@ -112,6 +112,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
   
   //KRO missing 117, 118, 119, 120, 121
   
+  weights.clear();
   vector<int> associations;  //KRO 122
   vector<double> sense_x;
   vector<double> sense_y;
