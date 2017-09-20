@@ -68,14 +68,14 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
       new_x = particles[i].x + velocity*delta_t*cos(particles[i].theta);
       new_y = particles[i].y + velocity*delta_t*sin(particles[i].theta);
       new_theta = particles[i].theta;
-      cout << "          yaw_rate 1st: " << yaw_rate << "  new_x: " new_x << "  new_y: " << new_y << endl;
+      cout << "          yaw_rate 1st: " << yaw_rate << "  new_x: " << new_x << "  new_y: " << new_y << endl;
     }
     else
     {
       new_x = particles[i].x + velocity/yaw_rate*( sin(particles[i].theta+yaw_rate*delta_t) - sin(particles[i].theta) ); //KRO
       new_y = particles[i].y + velocity/yaw_rate*( cos(particles[i].theta) - cos(particles[i].theta+yaw_rate*delta_t)	);  //KRO
       new_theta = particles[i].theta + yaw_rate*delta_t;
-      cout << "          yaw_rate 2nd: " << yaw_rate << "  new_x: " new_x << "  new_y: " << new_y << endl;
+      cout << "          yaw_rate 2nd: " << yaw_rate << "  new_x: " << new_x << "  new_y: " << new_y << endl;
     }
     
     normal_distribution<double> N_x(new_x, std_pos[0]);
