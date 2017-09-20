@@ -57,9 +57,9 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 
   default_random_engine gen;
   
-    normal_distribution<double> N_x(new_x, std_pos[0]);
-    normal_distribution<double> N_y(new_y, std_pos[1]);
-    normal_distribution<double> N_theta(new_theta, std_pos[2]);
+    normal_distribution<double> N_x(0, std_pos[0]);
+    normal_distribution<double> N_y(0, std_pos[1]);
+    normal_distribution<double> N_theta(0, std_pos[2]);
 	
   for (int i=0; i<num_particles; i++)
   {
