@@ -127,13 +127,18 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	//   and the following is a good resource for the actual equation to implement (look at equation 
 	//   3.33
 	//   http://planning.cs.uiuc.edu/node99.html
-  
-  for (int p=0; p< particles.size(); p++)
-  {
+
     vector<int> associations;
     vector<double> sense_x;
     vector<double> sense_y;
     vector<LandmarkObs> trans_observations;
+
+  for (int p=0; p< particles.size(); p++)
+  {
+    associations.clear();
+    sense_x.clear();
+    sense_y.clear();
+    trans_observations.clear();
     LandmarkObs obs;
     for (int i=0; i<observations.size(); i++)
     {
